@@ -1,97 +1,140 @@
 ﻿@model ShoppingCartVM
 
-<form method="post" class="zen-cart zen-animate-fade">
-    <div class="zen-cart__header">
+<form method="post" class="zen-section">
+    <!-- Header -->
+    <div class="zen-flex justify-between items-center" style="margin-bottom: var(--zen-space-8);">
         <div>
-            <h1 class="zen-page-title">Shopping Cart</h1>
-            <p class="zen-muted">Review your items before checkout</p>
+            <h1 style="font-size: var(--zen-font-4xl); font-weight: 700;">Shopping Cart</h1>
+            <p style="color: var(--zen-text-secondary);">Review your items</p>
         </div>
-        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary zen-btn">
-            <i class="bi bi-arrow-left"></i> Continue shopping
+        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="zen-btn zen-btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            <span>Continue Shopping</span>
         </a>
     </div>
 
-    <div class="zen-cart__container">
-        <div class="zen-cart__items">
-            @if (Model.ShoppingCartList != null && Model.ShoppingCartList.Any())
-            {
+    @if (Model.ShoppingCartList != null && Model.ShoppingCartList.Any())
+    {
+        <div class="zen-grid zen-grid-3" style="align-items: start;">
+            <!-- Cart Items -->
+            <div style="grid-column: span 2;">
                 @foreach(var item in Model.ShoppingCartList)
                 {
-                    <div class="zen-cart-item zen-animate-rise">
-                        <div class="zen-cart-item__image">
-                            @if (item.Product.ProductImages != null && item.Product.ProductImages.Any())
-                            {
-                                <img src="@item.Product.ProductImages.FirstOrDefault().ImageUrl" alt="@item.Product.Title" />
-                            }
-                            else
-                            {
-                                <img src="https://placehold.co/200x260/1a1f2e/6ee3ff?text=ZEN" alt="Placeholder" />
-                            }
-                        </div>
-                        <div class="zen-cart-item__details">
-                            <h4 class="zen-cart-item__title">@item.Product.Title</h4>
-                            <p class="zen-cart-item__desc">@Html.Raw(item.Product.Description?.Length > 120 ? item.Product.Description.Substring(0, 120) + "..." : item.Product.Description)</p>
-                            <span class="zen-cart-item__price">@item.Price.ToString("N2") EGP each</span>
-                        </div>
-                        <div class="zen-cart-item__actions">
-                            <div class="zen-cart-item__quantity">
-                                <a asp-action="minus" asp-route-cartId="@item.Id" class="zen-qty-btn">
-                                    <i class="bi bi-dash"></i>
-                                </a>
-                                <span class="zen-qty-display">@item.Count</span>
-                                <a asp-action="plus" asp-route-cartId="@item.Id" class="zen-qty-btn">
-                                    <i class="bi bi-plus"></i>
-                                </a>
+                    <div class="zen-card" style="margin-bottom: var(--zen-space-4);">
+                        <div class="zen-flex zen-gap-4">
+                            <!-- Image -->
+                            <div style="width: 120px; flex-shrink: 0;">
+                                @if (item.Product.ProductImages != null && item.Product.ProductImages.Any())
+                                {
+                                    <img src="@item.Product.ProductImages.FirstOrDefault().ImageUrl" 
+                                         alt="@item.Product.Title" 
+                                         style="width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: var(--zen-radius);" />
+                                }
+                                else
+                                {
+                                    <img src="https://placehold.co/200x260/1a1a1a/6366f1/png?text=ZEN" 
+                                         alt="Product" 
+                                         style="width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: var(--zen-radius);" />
+                                }
                             </div>
-                            <div class="zen-cart-item__total">
-                                @((item.Price * item.Count).ToString("N2")) EGP
+
+                            <!-- Details -->
+                            <div style="flex: 1;">
+                                <h3 style="font-size: var(--zen-font-lg); font-weight: 600; margin-bottom: var(--zen-space-2);">
+                                    @item.Product.Title
+                                </h3>
+                                <p style="color: var(--zen-text-secondary); font-size: var(--zen-font-sm); margin-bottom: var(--zen-space-4);">
+                                    @Html.Raw(item.Product.Description?.Length > 100 ? item.Product.Description.Substring(0, 100) + "..." : item.Product.Description)
+                                </p>
+                                <p style="font-weight: 600; color: var(--zen-text-primary);">
+                                    @item.Price.ToString("N2") EGP
+                                </p>
                             </div>
-                            <a asp-action="remove" asp-route-cartId="@item.Id" class="zen-cart-item__remove" title="Remove item">
-                                <i class="bi bi-trash3"></i>
-                            </a>
+
+                            <!-- Actions -->
+                            <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between;">
+                                <a asp-action="remove" asp-route-cartId="@item.Id" 
+                                   style="color: var(--zen-text-tertiary); font-size: var(--zen-font-lg);"
+                                   title="Remove">
+                                    <i class="bi bi-trash3"></i>
+                                </a>
+
+                                <div style="display: flex; align-items: center; gap: var(--zen-space-2);">
+                                    <a asp-action="minus" asp-route-cartId="@item.Id" 
+                                       class="zen-btn zen-btn-sm" 
+                                       style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-dash"></i>
+                                    </a>
+                                    <span style="min-width: 40px; text-align: center; font-weight: 600;">@item.Count</span>
+                                    <a asp-action="plus" asp-route-cartId="@item.Id" 
+                                       class="zen-btn zen-btn-sm" 
+                                       style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-plus"></i>
+                                    </a>
+                                </div>
+
+                                <p style="font-size: var(--zen-font-lg); font-weight: 700; margin-top: var(--zen-space-2);">
+                                    @((item.Price * item.Count).ToString("N2")) EGP
+                                </p>
+                            </div>
                         </div>
                     </div>
                 }
-            }
-            else
-            {
-                <div class="zen-empty-cart">
-                    <i class="bi bi-cart-x"></i>
-                    <h3>Your cart is empty</h3>
-                    <p>Add some products to get started.</p>
-                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-primary zen-btn">Browse catalog</a>
-                </div>
-            }
-        </div>
+            </div>
 
-        @if (Model.ShoppingCartList != null && Model.ShoppingCartList.Any())
-        {
-            <div class="zen-cart__summary">
-                <div class="zen-summary-card">
-                    <h3 class="zen-summary-title">Order Summary</h3>
-                    <div class="zen-summary-line">
-                        <span>Subtotal</span>
-                        <span>@Model.OrderHeader.OrderTotal.ToString("N2") EGP</span>
+            <!-- Summary -->
+            <div>
+                <div class="zen-card" style="position: sticky; top: 100px;">
+                    <h2 style="font-size: var(--zen-font-xl); font-weight: 700; margin-bottom: var(--zen-space-6);">
+                        Order Summary
+                    </h2>
+
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--zen-space-3);">
+                        <span style="color: var(--zen-text-secondary);">Subtotal</span>
+                        <span style="font-weight: 600;">@Model.OrderHeader.OrderTotal.ToString("N2") EGP</span>
                     </div>
-                    <div class="zen-summary-line">
-                        <span>Shipping</span>
-                        <span class="zen-accent">Free</span>
+
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--zen-space-6);">
+                        <span style="color: var(--zen-text-secondary);">Shipping</span>
+                        <span style="color: var(--zen-accent); font-weight: 600;">Free</span>
                     </div>
-                    <div class="zen-summary-divider"></div>
-                    <div class="zen-summary-total">
-                        <span>Total</span>
-                        <span>@Model.OrderHeader.OrderTotal.ToString("N2") EGP</span>
+
+                    <div style="padding-top: var(--zen-space-6); border-top: 2px solid var(--zen-border); margin-bottom: var(--zen-space-6);">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="font-size: var(--zen-font-lg); font-weight: 700;">Total</span>
+                            <span style="font-size: var(--zen-font-2xl); font-weight: 700; color: var(--zen-text-primary);">
+                                @Model.OrderHeader.OrderTotal.ToString("N2") EGP
+                            </span>
+                        </div>
                     </div>
-                    <a asp-action="Summary" class="btn btn-primary zen-btn w-100 zen-checkout-btn">
+
+                    <a asp-action="Summary" class="zen-btn zen-btn-primary" style="width: 100%;">
                         <span>Proceed to Checkout</span>
                         <i class="bi bi-arrow-right"></i>
                     </a>
-                    <div class="zen-trust-badges">
-                        <span class="zen-trust-badge"><i class="bi bi-shield-check"></i> Secure checkout</span>
-                        <span class="zen-trust-badge"><i class="bi bi-truck"></i> Free shipping</span>
-                    </div>
+
+                    <p style="margin-top: var(--zen-space-4); font-size: var(--zen-font-xs); color: var(--zen-text-tertiary); text-align: center;">
+                        Secure checkout powered by Paymob
+                    </p>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
+    else
+    {
+        <!-- Empty Cart -->
+        <div class="zen-card" style="text-align: center; padding: var(--zen-space-16) var(--zen-space-8);">
+            <i class="bi bi-cart-x" style="font-size: 64px; color: var(--zen-text-tertiary); margin-bottom: var(--zen-space-4);"></i>
+            <h2 style="font-size: var(--zen-font-3xl); font-weight: 700; margin-bottom: var(--zen-space-3);">
+                Your cart is empty
+            </h2>
+            <p style="color: var(--zen-text-secondary); margin-bottom: var(--zen-space-8);">
+                Add some products to get started
+            </p>
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="zen-btn zen-btn-primary">
+                <span>Browse Products</span>
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    }
 </form>

@@ -1083,3 +1083,51 @@ body {
     font-size: var(--zen-font-base);
 }
 
+/* ==========================================
+   FORMS & INPUTS
+   ========================================== */
+
+.zen-label {
+    display: block;
+    font-size: var(--zen-font-sm);
+    font-weight: 600;
+    color: var(--zen-text-primary);
+    margin-bottom: var(--zen-space-2);
+}
+
+.zen-input,
+.zen-select,
+.zen-textarea {
+    width: 100%;
+    padding: var(--zen-space-3) var(--zen-space-4);
+    font-size: var(--zen-font-base);
+    font-family: inherit;
+    color: var(--zen-text-primary);
+    background: var(--zen-warm-white);
+    border: 1px solid var(--zen-border);
+    border-radius: var(--zen-radius-sm);
+    transition: all var(--zen-transition-fast);
+}
+
+.zen-input:focus,
+.zen-select:focus,
+.zen-textarea:focus {
+    outline: none;
+    border-color: var(--zen-accent);
+    box-shadow: 0 0 0 3px var(--zen-accent-light);
+}
+
+.zen-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.zen-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--zen-space-4) center;
+    padding-right: var(--zen-space-10);
+}
+
+

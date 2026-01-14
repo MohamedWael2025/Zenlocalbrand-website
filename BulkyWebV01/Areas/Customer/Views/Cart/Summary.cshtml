@@ -1,127 +1,122 @@
 ﻿@model ShoppingCartVM
 
-<form method="post">
-	<br />
-	<div class="container">
-		<div class="card shadow border-0">
+<form method="post" class="zen-section">
+    <!-- Header -->
+    <div class="zen-flex justify-between items-center" style="margin-bottom: var(--zen-space-8);">
+        <div>
+            <h1 style="font-size: var(--zen-font-4xl); font-weight: 700;">Checkout</h1>
+            <p style="color: var(--zen-text-secondary);">Complete your order</p>
+        </div>
+        <a asp-action="Index" class="zen-btn zen-btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            <span>Back to Cart</span>
+        </a>
+    </div>
 
-			<div class="card-header bg-secondary bg-gradient text-light ml-0 py-4">
-				<div class="row px-4">
-					<div class="col-6">
-						<h5 class="pt-2 text-white">
-							Order Summery
-						</h5>
-					</div>
-					<div class="col-6 text-end">
-						<a asp-action="Index" class="btn btn-outline-danger btn-sm">Back to Cart</a>
-					</div>
-				</div>
-			</div>
-			<div class="card-body">
-				<div class="container rounded p-2">
-					<div class="row">
-						<div class="col-12 col-lg-6 pb-4">
-							<div class="row">
-								<h4 class="d-flex justify-content-between align-items-center mb-3">
-									<span class="text-info">Shipping Details:</span>
-								</h4>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>Name <span class="text-danger">*</span></label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.Name" class="form-control" required placeholder="Enter recipient name" />
-									<span asp-validation-for="OrderHeader.Name" class="text-danger"></span>
-								</div>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>Phone <span class="text-danger">*</span></label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.PhoneNumber" type="tel" class="form-control" required placeholder="Enter phone number" />
-									<span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
-								</div>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>Street Address <span class="text-danger">*</span></label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.StreetAddress" class="form-control" required placeholder="Enter street address" />
-									<span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
-								</div>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>City <span class="text-danger">*</span></label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.City" class="form-control" required placeholder="Enter city" />
-									<span asp-validation-for="OrderHeader.City" class="text-danger"></span>
-								</div>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>State <span class="text-danger">*</span></label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.State" class="form-control" required placeholder="Enter state" />
-									<span asp-validation-for="OrderHeader.State" class="text-danger"></span>
-								</div>
-							</div>
-							<div class="row my-1">
-								<div class="col-3">
-									<label>Postal Code <span class="text-danger">*</span></label>
-								</div>
-								<div class="col-9">
-									<input asp-for="OrderHeader.PostalCode" class="form-control" required placeholder="Enter postal code" />
-									<span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
-								</div>
-							</div>
-						</div>
-						<div class="col-12 col-lg-5 offset-lg-1">
-							<h4 class="d-flex justify-content-between align-items-center mb-3">
-								<span class="text-info">Order Summary:</span>
-							</h4>
-							<ul class="list-group mb-3">
+    <div class="zen-grid zen-grid-3" style="align-items: start;">
+        <!-- Shipping Details -->
+        <div style="grid-column: span 2;">
+            <div class="zen-card">
+                <h2 style="font-size: var(--zen-font-2xl); font-weight: 700; margin-bottom: var(--zen-space-6);">
+                    Shipping Details
+                </h2>
 
-								@foreach(var details in Model.ShoppingCartList )
-								
-								{
+                <div class="zen-grid zen-grid-2 zen-gap-4">
+                    <div>
+                        <label class="zen-label">Full Name <span style="color: #ef4444;">*</span></label>
+                        <input asp-for="OrderHeader.Name" class="zen-input" required placeholder="Enter your name" />
+                        <span asp-validation-for="OrderHeader.Name" class="text-danger"></span>
+                    </div>
 
-								<li class="list-group-item d-flex justify-content-between">
-									<div>
-										<h6 class="my-0">@details.Product.Title</h6>
-											<small class="text-muted">Quantity: @details.Count</small>
-									</div>
-									<span class="text-muted">@((details.Price*details.Count).ToString("N2")) EGP</span>
-								</li>
-								}
+                    <div>
+                        <label class="zen-label">Phone Number <span style="color: #ef4444;">*</span></label>
+                        <input asp-for="OrderHeader.PhoneNumber" type="tel" class="zen-input" required placeholder="+20 XXX XXX XXXX" />
+                        <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
+                    </div>
 
-								<li class="list-group-item d-flex justify-content-between bg-light">
-									<small class="text-info">Total (EGP)</small>
-									<strong class="text-info">@Model.OrderHeader.OrderTotal.ToString("N2") EGP</strong>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card-footer">
-				<div class="row">
-					<div class="col-12 col-md-8 pt-2">
-						<p style="color:maroon; font-size:14px;">
-							Estimate Arrival Date:
-							@DateTime.Now.AddDays(7).ToShortDateString() -@DateTime.Now.AddDays(14).ToShortDateString()
-						</p>
-					</div>
-					<div class="col-12 col-md-4">
-						<button type="submit" value="Place Order" class="btn btn-primary form-control">Place Order</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                    <div style="grid-column: span 2;">
+                        <label class="zen-label">Street Address <span style="color: #ef4444;">*</span></label>
+                        <input asp-for="OrderHeader.StreetAddress" class="zen-input" required placeholder="Street address" />
+                        <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <label class="zen-label">City <span style="color: #ef4444;">*</span></label>
+                        <input asp-for="OrderHeader.City" class="zen-input" required placeholder="City" />
+                        <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <label class="zen-label">State/Governorate <span style="color: #ef4444;">*</span></label>
+                        <input asp-for="OrderHeader.State" class="zen-input" required placeholder="State" />
+                        <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+                    </div>
+
+                    <div>
+                        <label class="zen-label">Postal Code <span style="color: #ef4444;">*</span></label>
+                        <input asp-for="OrderHeader.PostalCode" class="zen-input" required placeholder="12345" />
+                        <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div>
+            <div class="zen-card" style="position: sticky; top: 100px;">
+                <h2 style="font-size: var(--zen-font-xl); font-weight: 700; margin-bottom: var(--zen-space-6);">
+                    Order Summary
+                </h2>
+
+                <!-- Items -->
+                <div style="margin-bottom: var(--zen-space-6);">
+                    @foreach(var item in Model.ShoppingCartList)
+                    {
+                        <div style="display: flex; justify-content: space-between; margin-bottom: var(--zen-space-3); padding-bottom: var(--zen-space-3); border-bottom: 1px solid var(--zen-divider);">
+                            <div>
+                                <p style="font-weight: 600; margin-bottom: var(--zen-space-1);">@item.Product.Title</p>
+                                <p style="font-size: var(--zen-font-sm); color: var(--zen-text-secondary);">Qty: @item.Count</p>
+                            </div>
+                            <p style="font-weight: 600;">@((item.Price * item.Count).ToString("N2")) EGP</p>
+                        </div>
+                    }
+                </div>
+
+                <!-- Totals -->
+                <div style="padding-top: var(--zen-space-4); border-top: 2px solid var(--zen-border);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--zen-space-3);">
+                        <span style="color: var(--zen-text-secondary);">Subtotal</span>
+                        <span style="font-weight: 600;">@Model.OrderHeader.OrderTotal.ToString("N2") EGP</span>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--zen-space-6);">
+                        <span style="color: var(--zen-text-secondary);">Shipping</span>
+                        <span style="color: var(--zen-accent); font-weight: 600;">Free</span>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; padding-top: var(--zen-space-4); border-top: 1px solid var(--zen-border); margin-bottom: var(--zen-space-6);">
+                        <span style="font-size: var(--zen-font-lg); font-weight: 700;">Total</span>
+                        <span style="font-size: var(--zen-font-2xl); font-weight: 700;">@Model.OrderHeader.OrderTotal.ToString("N2") EGP</span>
+                    </div>
+
+                    <button type="submit" class="zen-btn zen-btn-primary" style="width: 100%;">
+                        <span>Place Order</span>
+                        <i class="bi bi-check-circle"></i>
+                    </button>
+
+                    <p style="margin-top: var(--zen-space-4); font-size: var(--zen-font-xs); color: var(--zen-text-tertiary); text-align: center;">
+                        <i class="bi bi-lock-fill"></i> Secure payment via Paymob
+                    </p>
+                    
+                    <p style="margin-top: var(--zen-space-2); font-size: var(--zen-font-xs); color: var(--zen-text-tertiary); text-align: center;">
+                        <i class="bi bi-truck"></i> Estimated delivery: 5-7 business days
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

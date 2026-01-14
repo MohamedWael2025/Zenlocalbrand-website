@@ -65,57 +65,8 @@ class ZenLuxury {
     // ==========================================
 
     initCursor() {
-        // Skip on touch devices
-        if (window.matchMedia('(pointer: coarse)').matches) return;
-        if (window.innerWidth <= 1024) return;
-
-        const cursor = document.createElement('div');
-        cursor.className = 'zen-cursor';
-        const dot = document.createElement('div');
-        dot.className = 'zen-cursor-dot';
-
-        document.body.appendChild(cursor);
-        document.body.appendChild(dot);
-
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
-        let dotX = 0, dotY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        // Smooth follow animation
-        const animate = () => {
-            // Cursor ring
-            cursorX += (mouseX - cursorX) * 0.15;
-            cursorY += (mouseY - cursorY) * 0.15;
-            cursor.style.transform = `translate(${cursorX - 12}px, ${cursorY - 12}px)`;
-
-            // Cursor dot
-            dotX += (mouseX - dotX) * 0.4;
-            dotY += (mouseY - dotY) * 0.4;
-            dot.style.transform = `translate(${dotX - 3}px, ${dotY - 3}px)`;
-
-            requestAnimationFrame(animate);
-        };
-        animate();
-
-        // Hover effects
-        document.addEventListener('mouseover', (e) => {
-            const target = e.target;
-            if (target.matches('a, button, .zen-btn, input, select, textarea, .zen-card')) {
-                cursor.classList.add('hover');
-            }
-        });
-
-        document.addEventListener('mouseout', (e) => {
-            const target = e.target;
-            if (target.matches('a, button, .zen-btn, input, select, textarea, .zen-card')) {
-                cursor.classList.remove('hover');
-            }
-        });
+        // Disable custom cursor - performance optimization
+        return;
     }
 
     // ==========================================
@@ -123,31 +74,24 @@ class ZenLuxury {
     // ==========================================
 
     initScrollReveal() {
+        // Simplified scroll reveal for better performance
         const observerOptions = {
-            threshold: 0.15,
-            rootMargin: '0px 0px -80px 0px'
+            threshold: 0.1,
+            rootMargin: '0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('revealed');
-                    // Unobserve after reveal for performance
                     observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
-        // Observe reveal elements
+        // Only observe elements with zen-reveal class
         const revealElements = document.querySelectorAll('.zen-reveal');
         revealElements.forEach(el => observer.observe(el));
-
-        // Auto-add reveal to cards
-        const cards = document.querySelectorAll('.zen-card');
-        cards.forEach(card => {
-            if (!card.classList.contains('zen-reveal')) {
-                card.classList.add('zen-reveal');
-                observer.observe(card);
             }
         });
     }
@@ -240,28 +184,9 @@ class ZenLuxury {
                 `;
             });
 
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
-
-            // Add magnetic effect to buttons inside cards
-            const buttons = card.querySelectorAll('.zen-btn');
-            buttons.forEach(btn => {
-                btn.addEventListener('mousemove', (e) => {
-                    if (window.innerWidth <= 1024) return;
-
-                    const rect = btn.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-
-                    btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
-                });
-
-                btn.addEventListener('mouseleave', () => {
-                    btn.style.transform = '';
-                });
-            });
-        });
+    initCardInteractions() {
+        // Simplified for performance - removed heavy animations
+        return;
     }
 
     // ==========================================
@@ -269,41 +194,17 @@ class ZenLuxury {
     // ==========================================
 
     initFormEnhancements() {
-        // Floating labels
-        const inputs = document.querySelectorAll('.zen-input, .zen-select, .zen-textarea');
-
-        inputs.forEach(input => {
-            // Add focus/blur effects
-            input.addEventListener('focus', () => {
-                input.parentElement?.classList.add('focused');
-            });
-
-            input.addEventListener('blur', () => {
-                input.parentElement?.classList.remove('focused');
-                if (input.value) {
-                    input.parentElement?.classList.add('filled');
-                } else {
-                    input.parentElement?.classList.remove('filled');
-                }
-            });
-
-            // Check initial value
-            if (input.value) {
-                input.parentElement?.classList.add('filled');
-            }
-        });
-
-        // Submit animations
+        // Minimal form enhancements
         const forms = document.querySelectorAll('form');
         forms.forEach(form => {
             form.addEventListener('submit', (e) => {
                 const submitBtn = form.querySelector('[type="submit"]');
-                if (submitBtn) {
-                    submitBtn.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        submitBtn.style.transform = '';
-                    }, 200);
+                if (submitBtn && !submitBtn.disabled) {
+                    submitBtn.style.opacity = '0.7';
                 }
+            });
+        });
+    }
             });
         });
     }
